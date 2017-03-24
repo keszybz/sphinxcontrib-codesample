@@ -27,7 +27,7 @@ nosuppress:
 
 Special comments:
 
-SUPRESS:
+SUPPRESS:
    Do not print the code statements, just their output.
 
 An example usage of the directive is:
@@ -74,7 +74,13 @@ from sphinx.util.compat import Directive
 
 @contextlib.contextmanager
 def capture_stdout_stderr():
-    "A contextmanager to temporarily redirect standard output and error"
+    r"""A context manager to temporarily redirect standard output and error
+
+    >>> with capture_stdout_stderr() as sink:
+    ...   print('foobar')
+    >>> sink.getvalue()
+    'foobar\n'
+    """
     sink = io.StringIO()
     orig = sys.stdout, sys.stderr
     sys.stdout = sys.stderr = sink
@@ -84,11 +90,21 @@ def capture_stdout_stderr():
         sys.stdout, sys.stderr = orig
 
 
-SUPPRESS = re.compile(r'#\s*suppress\s*$')
+SUPPRESS = re.compile(r'#\s*SUPPRESS\s*$')
 
 def format_lines(lines):
+    r"""Add >>>/... prompts to lines as if the were typed interactively
+
+    >>> s = '''\
+    ... x = (3
+    ... + 5)'''.splitlines()
+    >>> print(s)
+    ['x = (3', '+ 5)']
+    >>> list(format_lines(s))
+    ['   >>> x = (3', '   ... + 5)']
+    """
     for i, line in enumerate(lines):
-        if i == 0 and SUPPRESS.search(line):
+        if SUPPRESS.search(line):
             break
         if line:
             yield '   {} {}'.format('>>>' if i == 0 else '...', line)
@@ -105,6 +121,7 @@ class CodesampleDirective(Directive):
     optional_arguments = 1 # filename
     final_argumuent_whitespace = True
     option_spec = { 'suppress' : directives.flag,
+                    'nosuppress' : directives.flag,
                     'okexcept': directives.flag,
                     'okwarning': directives.flag
                   }

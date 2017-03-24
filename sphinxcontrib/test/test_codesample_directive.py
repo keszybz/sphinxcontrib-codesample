@@ -13,7 +13,7 @@ print(f)
 print(f(3))
 ''')
 
-from sphinxcontrib.codesample import CodesampleDirective
+from sphinxcontrib.codesample_directive import CodesampleDirective
 
 import pytest
 
