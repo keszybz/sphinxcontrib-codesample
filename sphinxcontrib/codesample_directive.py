@@ -11,15 +11,35 @@ sphinx, as is needed for all Sphinx directives). For example::
 
     extensions = ['sphinxcontrib.codesample_directive']
 
+Options that can be placed in conf.py are:
+
+suppress:
+   Do not print the code statements, just their output.
+   Needs a boolean value.
+
+Options that can be specified for each block:
+
+suppress:
+   Do not print the code statements, just their output.
+
+nosuppress:
+   Reverses `suppress` specified globally.
+
+Special comments:
+
+SUPRESS:
+   Do not print the code statements, just their output.
+
 An example usage of the directive is:
 
 .. code-block:: rst
 
     .. codesample::
 
-        >>> x = 2
-        >>> y = x**2
-        >>> print(y)
+        x = 2
+        y = x**2
+        y += 1                 # SUPPRESS
+        print(y)
 
 which produces:
 
@@ -27,8 +47,8 @@ which produces:
 
    >>> x = 2
    >>> y = x**2
-   >>> print(y)
-   4
+   >>> print(y)                # doctest: +SKIP
+   5
 
 """
 
@@ -89,15 +109,31 @@ class CodesampleDirective(Directive):
                     'okwarning': directives.flag
                   }
 
+    @staticmethod
+    def codesample_option(name):
+        return 'codesample_' + name
+
+    def getoption(self, name):
+        if name in self.options:
+            return True
+        if 'no' + name in self.options:
+            return False
+
+        config = self.state.document.settings.env.config
+        return getattr(config, self.codesample_option(name))
+
     def run(self):
         globals = {}
         locals = {}
+
+        suppress = self.getoption('suppress')
 
         text = '\n'.join(self.content)
         textlines = text.splitlines()
         tree = ast.parse(text)
 
-        lines = ['.. code-block:: python', '']
+        lexer = 'python' if not suppress else 'text'
+        lines = ['.. code-block:: {}'.format(lexer), '']
 
         nums = [stmt.lineno for stmt in tree.body]
         nextnums = [min((num for num in nums[i+1:] if num > nums[i]), default=999999)
@@ -105,8 +141,8 @@ class CodesampleDirective(Directive):
         num = 1
 
         for i, stmt in enumerate(tree.body):
-            # output the code up to the next statement
-            if stmt.lineno >= num:
+            if stmt.lineno >= num and not suppress:
+                # output the code up to the next statement
                 batch = format_lines(textlines[num-1:nextnums[i]-1])
                 lines.extend(batch)
                 num = nextnums[i]
@@ -128,3 +164,5 @@ def setup(app):
     setup.app = app
 
     app.add_directive('codesample', CodesampleDirective)
+    app.add_config_value(CodesampleDirective.codesample_option('suppress'),
+                         None, 'env')
