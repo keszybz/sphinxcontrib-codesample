@@ -13,11 +13,13 @@ print(f)
 print(f(3))
 ''')
 
+example_ids = ('supress', 'function')
+
 from sphinxcontrib.codesample_directive import CodesampleDirective
 
 import pytest
 
-@pytest.mark.parametrize("block", examples)
+@pytest.mark.parametrize("block", examples, ids=example_ids)
 @pytest.mark.parametrize("suppress", (False, True, None))
 def test_basic(block, suppress):
     options = {}
