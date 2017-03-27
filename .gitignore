@@ -5,3 +5,7 @@ __pycache__/
 
 # pytest
 .cache/
+
+/sphinxcontrib_codesample.egg-info/
+/build/
+/dist/
