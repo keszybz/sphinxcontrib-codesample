@@ -33,5 +33,6 @@ setup(
     platforms='any',
     include_package_data=True,
     install_requires=['Sphinx>=1.1'],
-    py_modules = ['sphinxcontrib.codesample_directive'],
+    namespace_packages=['sphinxcontrib'],
+    packages = ['sphinxcontrib.codesample_directive', 'sphinxcontrib.codesample_directive.tests'],
 )
