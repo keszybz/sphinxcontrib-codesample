@@ -33,7 +33,9 @@ and insert plain Python code:
       x = 3
       print(x**3)
 
-Output::
+Output:
+
+.. code-block:: python
 
    >>> x = 3
    >>> print(x ** 3)
