@@ -59,6 +59,6 @@ The source code is hosted on github::
 .. _Sphinx: http://sphinx.pocoo.org/latest
 .. _ipython_directive: http://matplotlib.org/sampledoc/ipython_directive.html
 .. _pypi: http://pypi.python.org/pypi/sphinxcontrib-codesample
-.. _documentation: https://sphinxcontrib-codesample.github.io
+.. _documentation: https://keszybz.github.io/sphinxcontrib-codesample
 .. _issue tracker: https://github.com/keszybz/sphinxcontrib-codesample/issues
 .. _Github: https://github.com/keszybz/sphinxcontrib-codesample
