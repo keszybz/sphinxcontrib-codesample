@@ -13,21 +13,21 @@ sphinx, as is needed for all Sphinx directives). For example::
 
 Options that can be placed in conf.py are:
 
-suppress:
+``suppress``:
    Do not print the code statements, just their output.
    Needs a boolean value.
 
 Options that can be specified for each block:
 
-suppress:
+``suppress``:
    Do not print the code statements, just their output.
 
-nosuppress:
-   Reverses `suppress` specified globally.
+``nosuppress``:
+   Reverses ``suppress`` specified globally.
 
 Special comments:
 
-SUPPRESS:
+``SUPPRESS``:
    Do not print the code statements, just their output.
 
 An example usage of the directive is:
