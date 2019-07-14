@@ -1,4 +1,0 @@
-codesample_directive
-~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: codesample_directive
