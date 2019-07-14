@@ -65,8 +65,7 @@ import sys
 import re
 
 # Third-party
-from docutils.parsers.rst import directives
-from sphinx.util.compat import Directive
+from docutils.parsers.rst import directives, Directive
 
 #-----------------------------------------------------------------------------
 # Functions and class declarations
